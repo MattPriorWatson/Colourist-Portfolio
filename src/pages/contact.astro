@@ -1,0 +1,11 @@
+---
+import Base from "../layouts/Base.astro";
+import site from "../content/site.json";
+---
+<Base title={`Contact | ${site.name}`}>
+  <h1>Contact</h1>
+  <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+  <p><a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a></p>
+  <p class="muted">{site.location}</p>
+  <p>{site.socials.map((s) => <a href={s.href} target="_blank" rel="noreferrer" style="margin-right:20px">{s.label}</a>)}</p>
+</Base>

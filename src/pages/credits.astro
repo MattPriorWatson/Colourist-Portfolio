@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Credits">
+  <h1>Credits</h1>
+  <div class="list">
+    {projects.map((p) => (
+      <a class="row" href={`/projects/${p.id}`}>
+        <img src={p.data.thumbnail} alt={p.data.title} loading="lazy" />
+        <div><h2>{p.data.title}</h2><p class="muted">{p.data.subtitle}</p></div>
+      </a>
+    ))}
+  </div>
+</Base>

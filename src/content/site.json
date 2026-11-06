@@ -1,0 +1,17 @@
+{
+  "name": "Matt Prior Watson",
+  "role": "Colourist",
+  "email": "colour@mattpriorwatson.co.uk",
+  "phone": "+44 7593062841",
+  "location": "London, UK",
+  "reel": { "provider": "vimeo", "id": "000000000" },
+  "about": {
+    "photo": "/media/profile.webp",
+    "bio": ["First paragraph of your bio.", "Second paragraph."]
+  },
+  "socials": [
+    { "label": "Instagram", "href": "https://instagram.com/mattpriorwatson" },
+    { "label": "Vimeo", "href": "https://vimeo.com/mattpriorwatson" },
+    { "label": "LinkedIn", "href": "https://linkedin.com/in/mattpriorwatson" }
+  ]
+}

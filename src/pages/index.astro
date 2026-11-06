@@ -1,0 +1,10 @@
+---
+import Base from "../layouts/Base.astro";
+import Video from "../components/Video.astro";
+import site from "../content/site.json";
+---
+<Base>
+  <Video {...site.reel} title="Showreel" />
+  <h1 style="margin-top:32px">{site.name}</h1>
+  <p class="muted">{site.role}</p>
+</Base>
