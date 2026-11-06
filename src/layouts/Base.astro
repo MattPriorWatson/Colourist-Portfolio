@@ -1,46 +1,99 @@
 ---
 import site from "../content/site.json";
-const { title = site.name, description = `${site.name}, ${site.role}` } = Astro.props;
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = `${site.name}, ${site.role} based in ${site.location}`,
+  image = site.ogImage,
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title ? `${title} | ${site.name}` : site.name;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = image ? new URL(image, Astro.site).href : undefined;
+
 const nav = [["Home", "/"], ["Credits", "/credits"], ["About", "/about"], ["Contact", "/contact"]];
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (href) =>
+  path === href || (href === "/credits" && path.startsWith("/projects/"));
+
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  jobTitle: site.role,
+  url: new URL("/", Astro.site).href,
+  sameAs: site.socials.map((s) => s.href),
+};
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{title}</title>
+  <title>{fullTitle}</title>
   <meta name="description" content={description} />
+  <meta name="theme-color" content="#0e0e0e" />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  {noindex && <meta name="robots" content="noindex" />}
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+  {path === "/" && <script type="application/ld+json" set:html={JSON.stringify(personLd)} />}
+
+  <style is:global>
+    :root { color-scheme: dark; --bg:#0e0e0e; --fg:#e8e8e8; --muted:#888; --max:1100px; }
+    * { box-sizing:border-box }
+    body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,sans-serif }
+    a { color:inherit; text-decoration:none }
+    header, footer { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px 24px; padding:20px 24px; max-width:var(--max); margin:auto }
+    nav { display:flex; flex-wrap:wrap; gap:8px 24px }
+    nav a { color:var(--muted) } nav a[aria-current] { color:var(--fg) }
+    main { max-width:var(--max); margin:auto; padding:24px }
+    h1 { font-size:clamp(2rem,5vw,3.5rem); margin:0 0 .25em; line-height:1.1 }
+    .muted { color:var(--muted) }
+    .skip { position:absolute; left:-9999px; top:8px; background:var(--fg); color:var(--bg); padding:8px 12px; border-radius:4px; z-index:10 }
+    .skip:focus { left:8px }
+    a:focus-visible { outline:2px solid var(--fg); outline-offset:3px }
+    .video { aspect-ratio:16/9; width:100% }
+    .video iframe { width:100%; height:100%; border:0 }
+    .list { display:flex; flex-direction:column; gap:32px }
+    .row { display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr); gap:24px; align-items:center }
+    .row img, .gallery img { width:100%; display:block; border-radius:6px }
+    .row h2 { margin:0 }
+    .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:32px }
+    .kv { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px solid #222 }
+    @media (max-width:700px) { .row, .two { grid-template-columns:1fr } }
+  </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
   <header>
     <a class="logo" href="/">{site.name}</a>
-    <nav>{nav.map(([l, h]) => <a href={h} aria-current={path === h ? "page" : undefined}>{l}</a>)}</nav>
+    <nav aria-label="Main">
+      {nav.map(([l, h]) => <a href={h} aria-current={isCurrent(h) ? "page" : undefined}>{l}</a>)}
+    </nav>
   </header>
-  <main><slot /></main>
+  <main id="main"><slot /></main>
   <footer>© {new Date().getFullYear()} {site.name}</footer>
 </body>
 </html>
-
-<style is:global>
-  :root { --bg:#0e0e0e; --fg:#e8e8e8; --muted:#888; --max:1100px; }
-  * { box-sizing:border-box }
-  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,sans-serif }
-  a { color:inherit; text-decoration:none }
-  header, footer { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:var(--max); margin:auto }
-  nav { display:flex; gap:24px }
-  nav a { color:var(--muted) } nav a[aria-current] { color:var(--fg) }
-  main { max-width:var(--max); margin:auto; padding:24px }
-  h1 { font-size:clamp(2rem,5vw,3.5rem); margin:0 0 .25em; line-height:1.1 }
-  .muted { color:var(--muted) }
-  .video { aspect-ratio:16/9; width:100% }
-  .video iframe { width:100%; height:100%; border:0 }
-  .list { display:flex; flex-direction:column; gap:32px }
-  .row { display:grid; grid-template-columns:minmax(0,2fr) minmax(0,1fr); gap:24px; align-items:center }
-  .row img, .gallery img { width:100%; display:block; border-radius:6px }
-  .row h2 { margin:0 }
-  .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px }
-  .two { display:grid; grid-template-columns:1fr 1fr; gap:32px }
-  .kv { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px solid #222 }
-  @media (max-width:700px) { .row, .two { grid-template-columns:1fr } }
-</style>
