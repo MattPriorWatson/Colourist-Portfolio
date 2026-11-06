@@ -4,9 +4,9 @@
   "email": "colour@mattpriorwatson.co.uk",
   "phone": "+44 7593062841",
   "location": "London, UK",
+  "ogImage": "/media/og.jpg",
   "reel": { "provider": "vimeo", "id": "000000000" },
   "about": {
-    "photo": "/media/profile.webp",
     "bio": ["First paragraph of your bio.", "Second paragraph."]
   },
   "socials": [

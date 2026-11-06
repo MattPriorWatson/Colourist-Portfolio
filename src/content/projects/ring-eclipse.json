@@ -1,0 +1,25 @@
+{
+  "title": "Ring Eclipse",
+  "subtitle": "Short Film",
+  "order": 1,
+  "thumbnail": "../../assets/projects/ring-eclipse/thumb.webp",
+  "video": { "provider": "youtube", "id": "dQw4w9WgXcQ" },
+  "year": "2024",
+  "role": "Colourist",
+  "bio": "10 years after ‘The Shattering’, two siblings must navigate their misshapen world.",
+  "gallery": [
+    { "src": "../../assets/projects/ring-eclipse/01.webp", "alt": "Still 1" },
+    { "src": "../../assets/projects/ring-eclipse/02.webp", "alt": "Still 2" },
+    { "src": "../../assets/projects/ring-eclipse/03.webp", "alt": "Still 3" },
+    { "src": "../../assets/projects/ring-eclipse/04.webp", "alt": "Still 4" },
+    { "src": "../../assets/projects/ring-eclipse/05.webp", "alt": "Still 5" },
+    { "src": "../../assets/projects/ring-eclipse/06.webp", "alt": "Still 6" }
+  ],
+  "credits": [
+    { "role": "Director", "name": "Millie Gladden-Walke" },
+    { "role": "Producer", "name": "Mia Lindley" }
+  ],
+  "awards": [
+    { "year": "2024", "name": "Best Cinematography", "note": "Some Film Festival" }
+  ]
+}

@@ -1,10 +1,12 @@
 ---
+import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import site from "../content/site.json";
+import profile from "../assets/profile.webp";
 ---
 <Base title="About" description={`About ${site.name}, ${site.role} based in ${site.location}.`}>
   <div class="two">
-    <img src={site.about.photo} alt={site.name} style="width:100%;border-radius:6px" />
+    <Image src={profile} alt={site.name} width={800} loading="eager" class="photo" />
     <div>
       <h1>About</h1>
       {site.about.bio.map((p) => <p>{p}</p>)}
