@@ -14,14 +14,14 @@ const { data: p } = Astro.props.project;
   <h1>{p.title}</h1>
   <p class="muted">{p.subtitle}{p.year && ` · ${p.year}`}{p.role && ` · ${p.role}`}</p>
   <Video {...p.video} title={p.title} lazy={false} />
-  {p.bio && <p style="margin-top:24px;max-width:70ch">{p.bio}</p>}
+  {p.bio && <p class="intro">{p.bio}</p>}
 
   {p.gallery.length > 0 && (<>
     <h2>Gallery</h2>
     <div class="gallery">{p.gallery.map((g) => <Image src={g.src} alt={g.alt} width={800} />)}</div>
   </>)}
 
-  <div class="two" style="margin-top:40px">
+  <div class="two details">
     {p.credits.length > 0 && (
       <section><h2>Credits</h2>
         {p.credits.map((c) => <div class="kv"><span class="muted">{c.role}</span><span>{c.name}</span></div>)}
