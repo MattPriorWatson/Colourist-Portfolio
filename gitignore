@@ -1,0 +1,32 @@
+# Dependencies (Cloudflare runs npm install itself)
+node_modules/
+
+# Build output (Cloudflare runs the build itself)
+dist/
+.astro/
+
+# Cloudflare / Wrangler local state and secrets
+.wrangler/
+.dev.vars
+.dev.vars.*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+
+# NOTE: package-lock.json is deliberately NOT ignored.
+# Cloudflare needs it to install the exact dependency versions.
