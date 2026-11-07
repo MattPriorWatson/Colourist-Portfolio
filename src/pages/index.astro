@@ -12,8 +12,8 @@ const posters = import.meta.glob<{ default: ImageMetadata }>(
 const loadPoster = Object.values(posters)[0];
 const reelPoster = loadPoster ? (await loadPoster()).default : undefined;
 ---
-<Base wide>
+<Base>
   <Video {...site.reel} title="Showreel" poster={reelPoster} />
   <h1 class="hero-title">{site.name}</h1>
-  <p class="muted">{site.role}</p>
+  <p class="text-small center">{site.role}</p>
 </Base>

@@ -1,4 +1,8 @@
 ---
+import "@fontsource/inter/300.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/900.css";
 import site from "../content/site.json";
 
 interface Props {
@@ -6,7 +10,6 @@ interface Props {
   description?: string;
   image?: string;
   noindex?: boolean;
-  wide?: boolean;
 }
 
 const {
@@ -14,14 +17,13 @@ const {
   description = `${site.name}, ${site.role} based in ${site.location}`,
   image = site.ogImage,
   noindex = false,
-  wide = false,
 } = Astro.props;
 
 const fullTitle = title ? `${title} | ${site.name}` : site.name;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = image ? new URL(image, Astro.site).href : undefined;
 
-const nav = [["Home", "/"], ["Credits", "/credits"], ["About", "/about"], ["Contact", "/contact"]];
+const nav = [["Credits", "/credits"], ["About", "/about"], ["Contact", "/contact"]];
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 const isCurrent = (href: string) =>
   path === href || (href === "/credits" && path.startsWith("/projects/"));
@@ -42,7 +44,7 @@ const personLd = {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{fullTitle}</title>
   <meta name="description" content={description} />
-  <meta name="theme-color" content="#0e0e0e" />
+  <meta name="theme-color" content="#000000" />
   <link rel="canonical" href={canonical} />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="sitemap" href="/sitemap-index.xml" />
@@ -62,25 +64,42 @@ const personLd = {
   {path === "/" && <script type="application/ld+json" set:html={JSON.stringify(personLd)} />}
 
   <style is:global>
-    :root { color-scheme: dark; --bg:#0e0e0e; --fg:#e8e8e8; --muted:#888; --max:1100px; }
-    body.wide { --max:1320px }
+    :root { color-scheme:dark; --bg:#000; --fg:#fff; --muted:#888; --soft:#ccc; --gray:#0a0a0a; --line:rgba(255,255,255,.12); --max:1320px }
     * { box-sizing:border-box }
-    body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,sans-serif }
+    html { scrollbar-width:thin; scrollbar-color:#222 #000; -webkit-text-size-adjust:100% }
+    body { margin:0; background:var(--bg); color:var(--fg); font:400 16px/1.6 'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale }
     a { color:inherit; text-decoration:none }
     img { max-width:100%; height:auto }
-    header, footer { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px 24px; padding:20px 24px; max-width:var(--max); margin:auto }
-    nav { display:flex; flex-wrap:wrap; gap:8px 24px }
-    nav a { color:var(--muted) } nav a[aria-current] { color:var(--fg) }
-    main { max-width:var(--max); margin:auto; padding:24px }
+    h1, h2, h3 { font-weight:900; letter-spacing:-.02em; text-transform:uppercase }
     h1 { font-size:clamp(2rem,5vw,3.5rem); margin:0 0 .25em; line-height:1.1 }
-    .hero-title { margin-top:32px }
+
+    /* Header, nav, footer */
+    header, footer { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px 24px; padding:28px 24px; max-width:var(--max); margin:auto }
+    footer { justify-content:center; padding-top:56px; padding-bottom:56px }
+    .logo { font-weight:900; font-size:clamp(1rem,1.4vw,1.5rem); letter-spacing:.05em; text-transform:uppercase }
+    nav { display:flex; flex-wrap:wrap; gap:8px 28px }
+    nav a { color:var(--muted); font-size:.8rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; transition:color .3s }
+    nav a:hover, nav a[aria-current] { color:var(--fg) }
+    main { max-width:var(--max); margin:auto; padding:24px }
+
+    /* Utilities */
+    .text-small { font-size:.85rem; font-weight:300; letter-spacing:.05em; text-transform:uppercase; color:var(--muted) }
     .muted { color:var(--muted) }
-    .skip { position:absolute; left:-9999px; top:8px; background:var(--fg); color:var(--bg); padding:8px 12px; border-radius:4px; z-index:10 }
+    .center { text-align:center }
+    .skip { position:absolute; left:-9999px; top:8px; background:var(--fg); color:var(--bg); padding:8px 12px; z-index:10 }
     .skip:focus { left:8px }
     a:focus-visible { outline:2px solid var(--fg); outline-offset:3px }
 
+    /* Page headings */
+    .page-header { margin:2rem 0 3rem; text-align:center }
+    .page-title { margin:0 }
+    .empty { text-align:center; margin-top:15vh }
+
+    /* Home */
+    .hero-title { margin-top:2rem; text-align:center }
+
     /* Video + click-to-play facade */
-    .video { position:relative; aspect-ratio:16/9; width:100%; background:#000; border-radius:6px; overflow:hidden }
+    .video { position:relative; aspect-ratio:16/9; width:100%; background:#000; overflow:hidden }
     .video iframe { position:absolute; inset:0; width:100%; height:100%; border:0 }
     .facade { position:absolute; inset:0; display:block }
     .facade img { width:100%; height:100%; object-fit:cover; display:block }
@@ -89,34 +108,47 @@ const personLd = {
     .facade:hover .play, .facade:focus-visible .play { background:var(--fg); transform:translate(-50%,-50%) scale(1.05) }
     .facade:hover .play::after, .facade:focus-visible .play::after { border-left-color:var(--bg) }
 
-    /* Page headings (Credits) */
-    .page-header { margin:2rem 0 3rem; text-align:center }
-    .page-title { text-transform:uppercase; font-weight:900; letter-spacing:-.02em; margin:0 }
-    .empty { text-align:center; margin-top:15vh }
-
     /* Credits grid */
-    .cg-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:3rem }
-    .cg-thumb { position:relative; aspect-ratio:16/9; overflow:hidden; background:#0a0a0a; border-radius:6px }
+    .cg-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:4rem }
+    .cg-thumb { position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--gray) }
     .cg-thumb img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .8s ease }
     .cg-overlay { position:absolute; inset:0; background:rgba(0,0,0,.2); opacity:0; transition:opacity .5s ease }
     .cg-item:hover img, .cg-item:focus-visible img { transform:scale(1.03) }
     .cg-item:hover .cg-overlay, .cg-item:focus-visible .cg-overlay { opacity:1 }
     .cg-meta { padding-top:1.5rem; text-align:center }
-    .cg-meta h2 { margin:0 0 .2rem; font-size:1.5rem; font-weight:900; letter-spacing:-.02em; text-transform:uppercase }
+    .cg-meta h2 { margin:0 0 .2rem; font-size:1.5rem }
     .cg-meta span { font-size:.85rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em }
 
     /* Project pages */
-    .intro { margin-top:24px; max-width:70ch }
-    .gallery img, .photo { width:100%; display:block; border-radius:6px }
+    .project-header { margin:2rem 0 3rem; text-align:center }
+    .project-header h1 { margin-bottom:1rem }
+    .intro { max-width:800px; margin:3rem auto 4rem; text-align:center; font-size:clamp(1.1rem,2.5vw,1.4rem); font-weight:300; color:var(--soft) }
     .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px }
+    .gallery img { width:100%; display:block; background:var(--gray) }
     .two { display:grid; grid-template-columns:1fr 1fr; gap:32px }
-    .details { margin-top:40px }
-    .links { display:flex; flex-wrap:wrap; gap:8px 20px }
-    .kv { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px solid #222 }
+    .details { margin-top:48px }
+    .kv { display:flex; justify-content:space-between; gap:16px; padding:8px 0; border-bottom:1px solid var(--line) }
+
+    /* About */
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start }
+    .bio { font-size:clamp(1rem,1.5vw,1.25rem); font-weight:300 }
+    .bio p { margin:0 0 1.2em }
+    .photo { width:100%; display:block; aspect-ratio:4/5; object-fit:cover; background:var(--gray) }
+
+    /* Contact */
+    .contact { text-align:center }
+    .contact-link { display:block; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:700; margin-bottom:.5rem; transition:color .3s }
+    .contact-link:hover { color:var(--muted) }
+    .contact .text-small { margin:1.5rem 0 0 }
+    .links { display:flex; flex-wrap:wrap; gap:8px 28px }
+    .links a { font-size:1.1rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; transition:color .3s }
+    .links a:hover { color:var(--muted) }
+    .contact .links { justify-content:center; margin-top:2rem }
 
     @media (max-width:700px) {
-      .two, .cg-grid { grid-template-columns:1fr }
+      .two, .cg-grid, .about-grid { grid-template-columns:1fr }
       .cg-grid { gap:2.5rem }
+      .about-grid { gap:2.5rem }
       .play { width:64px; height:64px }
       .play::after { border-width:9px 0 9px 14px }
     }
@@ -126,7 +158,7 @@ const personLd = {
     }
   </style>
 </head>
-<body class={wide ? "wide" : undefined}>
+<body>
   <a class="skip" href="#main">Skip to content</a>
   <header>
     <a class="logo" href="/">{site.name}</a>
@@ -135,6 +167,6 @@ const personLd = {
     </nav>
   </header>
   <main id="main"><slot /></main>
-  <footer>© {new Date().getFullYear()} {site.name}</footer>
+  <footer class="text-small">© {new Date().getFullYear()} {site.name}</footer>
 </body>
 </html>

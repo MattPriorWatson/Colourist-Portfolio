@@ -5,7 +5,7 @@ import site from "../content/site.json";
 import { getCollection } from "astro:content";
 const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
 ---
-<Base title="Credits" description={`Selected credits and projects by ${site.name}, ${site.role}.`} wide>
+<Base title="Credits" description={`Selected credits and projects by ${site.name}, ${site.role}.`}>
   <div class="page-header">
     <h1 class="page-title">Credits</h1>
   </div>

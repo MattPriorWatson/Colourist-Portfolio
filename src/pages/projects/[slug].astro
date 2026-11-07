@@ -9,10 +9,14 @@ export async function getStaticPaths() {
   return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
 }
 const { data: p } = Astro.props.project;
+const meta = [p.subtitle, p.year, p.role].filter(Boolean).join(" · ");
 ---
 <Base title={p.title} description={p.bio}>
-  <h1>{p.title}</h1>
-  <p class="muted">{p.subtitle}{p.year && ` · ${p.year}`}{p.role && ` · ${p.role}`}</p>
+  <div class="project-header">
+    <h1>{p.title}</h1>
+    <span class="text-small">{meta}</span>
+  </div>
+
   <Video {...p.video} title={p.title} poster={p.thumbnail} />
   {p.bio && <p class="intro">{p.bio}</p>}
 
