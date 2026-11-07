@@ -13,7 +13,7 @@ const { data: p } = Astro.props.project;
 <Base title={p.title} description={p.bio}>
   <h1>{p.title}</h1>
   <p class="muted">{p.subtitle}{p.year && ` · ${p.year}`}{p.role && ` · ${p.role}`}</p>
-  <Video {...p.video} title={p.title} lazy={false} />
+  <Video {...p.video} title={p.title} poster={p.thumbnail} />
   {p.bio && <p class="intro">{p.bio}</p>}
 
   {p.gallery.length > 0 && (<>

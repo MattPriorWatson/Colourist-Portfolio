@@ -5,14 +5,27 @@ import site from "../content/site.json";
 import { getCollection } from "astro:content";
 const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
 ---
-<Base title="Credits" description={`Selected credits and projects by ${site.name}, ${site.role}.`}>
-  <h1>Credits</h1>
-  <div class="list">
-    {projects.map((p) => (
-      <a class="row" href={`/projects/${p.id}`}>
-        <Image src={p.data.thumbnail} alt="" width={800} />
-        <div><h2>{p.data.title}</h2><p class="muted">{p.data.subtitle}</p></div>
-      </a>
-    ))}
+<Base title="Credits" description={`Selected credits and projects by ${site.name}, ${site.role}.`} wide>
+  <div class="page-header">
+    <h1 class="page-title">Credits</h1>
   </div>
+
+  {projects.length > 0 ? (
+    <div class="cg-grid">
+      {projects.map((p, i) => (
+        <a class="cg-item" href={`/projects/${p.id}`}>
+          <div class="cg-thumb">
+            <Image src={p.data.thumbnail} alt="" width={1200} loading={i < 4 ? "eager" : "lazy"} />
+            <div class="cg-overlay"></div>
+          </div>
+          <div class="cg-meta">
+            <h2>{p.data.title}</h2>
+            <span>{p.data.subtitle}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <p class="muted empty">Projects updating soon.</p>
+  )}
 </Base>
