@@ -3,13 +3,16 @@ import Base from "../layouts/Base.astro";
 import site from "../content/site.json";
 ---
 <Base title="Contact" description={`Get in touch with ${site.name}, ${site.role}.`}>
-  <div class="page-header">
+  <div class="page-header fade-up">
     <h1 class="page-title">Contact</h1>
   </div>
-  <div class="contact">
+  <div class="contact fade-up">
     <a class="contact-link" href={`mailto:${site.email}`}>{site.email}</a>
     <a class="contact-link" href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
     <p class="text-small">{site.location}</p>
-    <p class="links">{site.socials.map((s) => <a href={s.href} target="_blank" rel="noreferrer">{s.label}</a>)}</p>
+    <hr class="divider" />
+    <div class="social-list">
+      {site.socials.map((s) => <a class="social-link" href={s.href} target="_blank" rel="noreferrer">{s.label}</a>)}
+    </div>
   </div>
 </Base>

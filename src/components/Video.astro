@@ -8,9 +8,10 @@ interface Props {
   hash?: string;
   title?: string;
   poster?: ImageMetadata;
+  variant?: "hero" | "banner";
 }
 
-const { provider, id, hash, title = "Video", poster } = Astro.props;
+const { provider, id, hash, title = "Video", poster, variant = "banner" } = Astro.props;
 
 const embed =
   provider === "vimeo"
@@ -22,10 +23,14 @@ const watch =
     ? `https://vimeo.com/${id}${hash ? `/${hash}` : ""}`
     : `https://www.youtube.com/watch?v=${id}`;
 ---
-<div class="video">
+<div class={`player ${variant}`} data-player>
   <a class="facade" href={watch} data-embed={embed} data-title={title} aria-label={`Play ${title}`}>
-    {poster && <Image src={poster} alt="" width={1600} loading="eager" fetchpriority="high" />}
+    {poster && (
+      <Image src={poster} alt="" widths={[800, 1600, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+    )}
+    {variant === "hero" && <span class="vignette" aria-hidden="true"></span>}
     <span class="play" aria-hidden="true"></span>
   </a>
+  <slot />
 </div>
 <script is:inline src="/video-facade.js"></script>

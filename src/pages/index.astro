@@ -4,16 +4,16 @@ import Base from "../layouts/Base.astro";
 import Video from "../components/Video.astro";
 import site from "../content/site.json";
 
-// Optional poster for the reel: src/assets/reel-poster.(webp|jpg|jpeg|png|avif).
-// If the file doesn't exist, the reel shows a dark box with a play button and the build still passes.
+// Hero image for the reel: src/assets/reel-poster.(webp|jpg|jpeg|png|avif).
+// If the file doesn't exist, the build still passes but the hero is a plain black screen with a play button.
 const posters = import.meta.glob<{ default: ImageMetadata }>(
   "../assets/reel-poster.{webp,jpg,jpeg,png,avif}",
 );
 const loadPoster = Object.values(posters)[0];
 const reelPoster = loadPoster ? (await loadPoster()).default : undefined;
 ---
-<Base>
-  <Video {...site.reel} title="Showreel" poster={reelPoster} />
-  <h1 class="hero-title">{site.name}</h1>
-  <p class="text-small center">{site.role}</p>
+<Base bare>
+  <Video {...site.reel} title="Showreel" poster={reelPoster} variant="hero">
+    <h1 class="hero-subtitle"><span class="sr-only">{site.name}, </span>{site.role}</h1>
+  </Video>
 </Base>

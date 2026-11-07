@@ -6,14 +6,14 @@ import { getCollection } from "astro:content";
 const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
 ---
 <Base title="Credits" description={`Selected credits and projects by ${site.name}, ${site.role}.`}>
-  <div class="page-header">
+  <div class="page-header fade-up">
     <h1 class="page-title">Credits</h1>
   </div>
 
   {projects.length > 0 ? (
     <div class="cg-grid">
       {projects.map((p, i) => (
-        <a class="cg-item" href={`/projects/${p.id}`}>
+        <a class="cg-item fade-up" href={`/projects/${p.id}`}>
           <div class="cg-thumb">
             <Image src={p.data.thumbnail} alt="" width={1200} loading={i < 4 ? "eager" : "lazy"} />
             <div class="cg-overlay"></div>

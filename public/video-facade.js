@@ -11,6 +11,7 @@ document.addEventListener("click", (e) => {
   iframe.allow = "autoplay; fullscreen; picture-in-picture";
   iframe.allowFullscreen = true;
 
+  el.closest("[data-player]")?.classList.add("is-playing");
   el.replaceWith(iframe);
   iframe.focus();
 });

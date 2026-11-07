@@ -11,30 +11,36 @@ export async function getStaticPaths() {
 const { data: p } = Astro.props.project;
 const meta = [p.subtitle, p.year, p.role].filter(Boolean).join(" · ");
 ---
-<Base title={p.title} description={p.bio}>
-  <div class="project-header">
-    <h1>{p.title}</h1>
-    <span class="text-small">{meta}</span>
+<Base title={p.title} description={p.bio} bare>
+  <div class="pad pad-top">
+    <div class="project-header fade-up">
+      <h1>{p.title}</h1>
+      <span class="text-small">{meta}</span>
+    </div>
   </div>
 
-  <Video {...p.video} title={p.title} poster={p.thumbnail} />
-  {p.bio && <p class="intro">{p.bio}</p>}
+  <Video {...p.video} title={p.title} poster={p.thumbnail} variant="banner" />
 
-  {p.gallery.length > 0 && (<>
-    <h2>Gallery</h2>
-    <div class="gallery">{p.gallery.map((g) => <Image src={g.src} alt={g.alt} width={800} />)}</div>
-  </>)}
-
-  <div class="two details">
+  <div class="pad pad-bottom">
     {p.credits.length > 0 && (
-      <section><h2>Credits</h2>
-        {p.credits.map((c) => <div class="kv"><span class="muted">{c.role}</span><span>{c.name}</span></div>)}
-      </section>
+      <div class="meta-grid fade-up">
+        {p.credits.map((c) => <div class="meta-item"><span>{c.role}</span><p>{c.name}</p></div>)}
+      </div>
     )}
+
+    {p.bio && <p class="project-description fade-up">{p.bio}</p>}
+
+    {p.gallery.length > 0 && (
+      <div class="project-gallery">
+        {p.gallery.map((g) => <Image class="fade-up" src={g.src} alt={g.alt} width={1200} />)}
+      </div>
+    )}
+
     {p.awards.length > 0 && (
-      <section><h2>Awards</h2>
-        {p.awards.map((a) => <div class="kv"><span class="muted">{a.year}</span><span>{a.name}{a.note && ` · ${a.note}`}</span></div>)}
-      </section>
+      <div class="awards fade-up">
+        <span class="text-small label">Awards &amp; Nominations</span>
+        {p.awards.map((a) => <p>{a.year} · {a.name}{a.note && ` · ${a.note}`}</p>)}
+      </div>
     )}
   </div>
 </Base>
