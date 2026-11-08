@@ -15,7 +15,46 @@ const meta = [p.subtitle, p.year, p.role].filter(Boolean).join(" · ");
   <div class="pad pad-top">
     <div class="project-header fade-up">
       <h1>{p.title}</h1>
-      <span class="text-small">{meta}</span>
+      <span class---
+import { Image } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+import Video from "../../components/Video.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+const { data: p } = Astro.props.project;
+const meta = [p.subtitle, p.year, p.role].filter(Boolean).join(" · ");
+---
+<Base title={p.title} description={p.bio}>
+  <div class="project-header">
+    <h1>{p.title}</h1>
+    <span class="text-small">{meta}</span>
+  </div>
+
+  <Video {...p.video} title={p.title} poster={p.thumbnail} />
+  {p.bio && <p class="intro">{p.bio}</p>}
+
+  {p.gallery.length > 0 && (<>
+    <h2>Gallery</h2>
+    <div class="gallery">{p.gallery.map((g) => <Image src={g.src} alt={g.alt} width={800} />)}</div>
+  </>)}
+
+  <div class="two details">
+    {p.credits.length > 0 && (
+      <section><h2>Credits</h2>
+        {p.credits.map((c) => <div class="kv"><span class="muted">{c.role}</span><span>{c.name}</span></div>)}
+      </section>
+    )}
+    {p.awards.length > 0 && (
+      <section><h2>Awards</h2>
+        {p.awards.map((a) => <div class="kv"><span class="muted">{a.year}</span><span>{a.name}{a.note && ` · ${a.note}`}</span></div>)}
+      </section>
+    )}
+  </div>
+</Base>="text-small">{meta}</span>
     </div>
   </div>
 

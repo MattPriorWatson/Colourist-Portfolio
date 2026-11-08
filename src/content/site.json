@@ -5,7 +5,7 @@
   "phone": "+44 7593062841",
   "location": "London, UK",
   "ogImage": "/media/og.jpg",
-  "reel": { "provider": "vimeo", "id": "000000000" },
+  "reel": { "provider": "youtube", "id": "FnIbebUhscM" },
   "about": {
     "bio": ["First paragraph of your bio.", "Second paragraph."]
   },
